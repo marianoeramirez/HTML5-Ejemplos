@@ -1,0 +1,67 @@
+<!DOCTYPE html >
+<html lang="es">
+    <head>
+        <title>HTML5 Fullscreen API http://sosinformatico.blogspot.com </title>
+		<script type="text/javascript">
+        
+var pfx = ["webkit", "moz", "ms", "o",""];
+function isFullScreenSupported(){
+     for(var i = 0; i < pfx.length; i++) {
+        if( document[pfx[i].toLowerCase() + 'CancelFullScreen'])
+            return true;
+     }
+     return !!document['cancelFullScreen'] || false;
+}
+function RunPrefixMethod(obj, method) {
+	var p = 0, m, t;
+	while (p < pfx.length && !obj[m]) {
+		m = method;
+		if (pfx[p] == "") {
+			m = m.substr(0,1).toLowerCase() + m.substr(1);
+		}
+		m = pfx[p] + m;
+		t = typeof obj[m];
+		if (t != "undefined") {
+			pfx = [pfx[p]];
+			return (t == "function" ? obj[m]() : obj[m]);
+		}
+		p++;
+	}
+}
+
+window.onload=function(){
+	document.getElementById("full").onclick=function(){
+		if( isFullScreenSupported){
+			if (RunPrefixMethod(document, "FullScreen") || RunPrefixMethod(document, "IsFullScreen")) {
+				RunPrefixMethod(document, "CancelFullScreen");
+			}
+			else {
+				RunPrefixMethod(document.getElementById("content"), "RequestFullScreen");
+			}
+		}
+	}
+}
+		</script>
+		<style type="text/css">
+        
+#fullscreen{
+box-shadow: 4px 4px 14px #666;
+	width: 300px; 
+	height: 200px;
+	background-color: white;
+	margin: 30px;
+	display: inline-block;
+	padding: 10px;
+	border-radius: 10px;
+}
+		</style>
+    </head>
+    <body>
+<div id="content">
+<div id="fullscreen">
+<a href="#">HTML5 Fullscreen API. Ejemplo</a>
+</div>
+<input type="button" value="Modo Completo" id="full">
+</div>
+	</body>
+</html>
